@@ -135,7 +135,7 @@ bool DynamixelController::initDynamixels(void)
 
   for (auto const& dxl:dynamixel_)
   {
-    dxl_wb_->torqueOff((uint8_t)dxl.second);
+   // dxl_wb_->torqueOff((uint8_t)dxl.second);
 
     for (auto const& info:dynamixel_info_)
     {
@@ -544,11 +544,15 @@ void DynamixelController::vel_control_callback(const sensor_msgs::Joy::ConstPtr&
   const uint8_t motor_2 = 1;
   const uint8_t motor_3 = 2;
   const uint8_t motor_4 = 3;
+  const uint8_t motor_5 = 4;
+  //const uint8_t motor_6 = 5;
 
   double angular_velocity_1 = velocidad.axes[0];
   double angular_velocity_2 = velocidad.axes[1];
   double angular_velocity_3 = velocidad.axes[2];
   double angular_velocity_4 = velocidad.axes[3];
+  double angular_velocity_5 = velocidad.axes[4];
+  //double angular_velocity_6 = velocidad.axes[5];
 
   uint8_t id_array[dynamixel_.size()];
   uint8_t id_cnt = 0;
@@ -595,7 +599,15 @@ void DynamixelController::vel_control_callback(const sensor_msgs::Joy::ConstPtr&
         dynamixel_velocity[motor_4] = ((-1.0f) * angular_velocity_4 * 1) + 1023;
       else if (angular_velocity_4 > 0.0f)  
         dynamixel_velocity[motor_4] = (angular_velocity_4 * 1);
-    //std::cout << "Motor 1" << std::endl;
+
+    if (angular_velocity_5 == 0.0f)
+      dynamixel_velocity[motor_5] = 0;
+      else if (angular_velocity_5 < 0.0f)
+        dynamixel_velocity[motor_5] = ((-1.0f) * angular_velocity_5 * 1) + 1023;
+      else if (angular_velocity_5 > 0.0f)
+        dynamixel_velocity[motor_5] = (angular_velocity_5 * 1);
+
+     std::cout << "Motor1"  << std::endl;
   }
 
   result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_VELOCITY, id_array, dynamixel_.size(), dynamixel_velocity, 1, &log);
