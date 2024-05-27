@@ -119,7 +119,7 @@ bool DynamixelController::loadDynamixels(void)
     }
     else
     {      
-      ROS_INFO("Name : %s, ID : %d, Model Number : %d", dxl.first.c_str(), dxl.second, model_number);
+      ROS_INFO("Name : %s, IDD : %d, Model Number : %d", dxl.first.c_str(), dxl.second, model_number);
     }
   }
 
@@ -151,7 +151,7 @@ bool DynamixelController::initDynamixels(void)
       }
     }
 
-    dxl_wb_->torqueOn((uint8_t)dxl.second);
+   // dxl_wb_->torqueOn((uint8_t)dxl.second);
   }
 
   return true;
@@ -528,9 +528,9 @@ void DynamixelController::commandVelocityCallback(const sensor_msgs::Joy::ConstP
   const uint8_t motor_4 = 3;
   const uint8_t motor_5 = 4;
 
-  float angular_velocity_1 = velocidad.axes[2]/5;
+  float angular_velocity_1 = velocidad.axes[0]/5;
   float angular_velocity_2 = velocidad.axes[1]/5;
-  float angular_velocity_3 = velocidad.axes[0]/5;
+  float angular_velocity_3 = velocidad.axes[2]/5;
   float angular_velocity_4 = velocidad.axes[3]/5;
 
   if (angular_velocity_1 > 0.2 || angular_velocity_2 > 0.2 || angular_velocity_3 > 0.2 || angular_velocity_4 > 0.2)
